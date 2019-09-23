@@ -47,7 +47,7 @@ public class BookController {
     public Book patchBook(@PathVariable Long id, @RequestBody Book changes) {
        Book b = bookService.getBookById(id);
 
-       if (isNotEmpty(changes.getName())) b.setName(changes.getName());
+       //if (isNotEmpty(changes.getName())) b.setName(changes.getName());
        if (isNotEmpty(changes.getGenre())) b.setGenre(changes.getGenre());
 
         return bookService.updateBook(b);

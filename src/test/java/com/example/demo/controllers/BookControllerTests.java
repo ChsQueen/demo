@@ -68,7 +68,7 @@ public class BookControllerTests {
     }
     @Test
     public void updateBookWithPut() throws Exception {
-        Book  book = books.get(3);
+        Book  book = books.get(7);
         book.setGenre("Genre is totally fine");
         String json = String.format("{ \"bookId\": \"%s\", \"name\": \"%s\", \"genre\": \"%s\" }",
                 book.getBookId(), book.getName(),book.getGenre());
@@ -80,19 +80,21 @@ public class BookControllerTests {
 
     @Test
     public void updateBookWithPatch() throws Exception {
-        Book book = books.get(5);
-        String newName = "Updated Name";
+        Book book = books.get(4);
+       // String newName = "Updated Name";
         String newGenre= "Updated Genre";
-        String jsonData = String.format("{\"name:\": \"%s\", \"genre\": \"%s\" }",newName, newGenre);
+        //String jsonData = String.format("{\"name:\": \"%s\", \"genre\": \"%s\" }",newName, newGenre);
+        String jsonData = String.format("{ \"genre\": \"%s\" }",newGenre);
+
         mvc.perform(patch("/books/"+book.getBookId()).contentType(MediaType.APPLICATION_JSON).content(jsonData))
                 .andExpect(status().isOk())
-             //   .andExpect(jsonPath("name").value(newName))
+               // .andExpect(jsonPath("name").value(newName))
                 .andExpect(jsonPath("genre").value(newGenre));
     }
 
     @Test
     public void deleteBook() throws Exception {
-        long id = books.get(8).getBookId();
+        long id = books.get(9).getBookId();
         mvc.perform(delete("/books/"+id))
                 .andExpect(status().isOk());
         assertFalse(bookRepository.findById(id).isPresent());
