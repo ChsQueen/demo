@@ -1,4 +1,4 @@
-package com.example.demo.controllers;
+package com.example.demo.controller;
 
 import com.example.demo.entities.Book;
 import com.example.demo.repository.BookRepository;
@@ -11,12 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.client.match.MockRestRequestMatchers;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
-
-import services.DemoApplicationTests;
-
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +44,8 @@ public class BookControllerTests {
         for (int i = 0; i < 10; i++){
             books.add(new Book("name"+i, "genre"+i));
         }
-        for (Book book : bookRepository.saveAll(books)) {
+         bookRepository.saveAll(books);
 
-        }
-        ;
     }
      @Test
     public void getAllBooks() throws Exception { mvc.perform(get("/books/all"))
@@ -68,7 +61,7 @@ public class BookControllerTests {
     }
     @Test
     public void updateBookWithPut() throws Exception {
-        Book  book = books.get(7);
+        Book  book = books.get(2);
         book.setGenre("Genre is totally fine");
         String json = String.format("{ \"bookId\": \"%s\", \"name\": \"%s\", \"genre\": \"%s\" }",
                 book.getBookId(), book.getName(),book.getGenre());
@@ -81,14 +74,11 @@ public class BookControllerTests {
     @Test
     public void updateBookWithPatch() throws Exception {
         Book book = books.get(4);
-       // String newName = "Updated Name";
-        String newGenre= "Updated Genre";
-        //String jsonData = String.format("{\"name:\": \"%s\", \"genre\": \"%s\" }",newName, newGenre);
+        String newGenre= "Updated Genre With Patch";
         String jsonData = String.format("{ \"genre\": \"%s\" }",newGenre);
 
         mvc.perform(patch("/books/"+book.getBookId()).contentType(MediaType.APPLICATION_JSON).content(jsonData))
                 .andExpect(status().isOk())
-               // .andExpect(jsonPath("name").value(newName))
                 .andExpect(jsonPath("genre").value(newGenre));
     }
 

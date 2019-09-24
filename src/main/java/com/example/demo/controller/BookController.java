@@ -2,19 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.entities.Book;
 import com.example.demo.services.BookService;
-import com.sun.org.apache.xpath.internal.operations.String;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-
 import static org.hibernate.annotations.common.util.StringHelper.isNotEmpty;
-import static org.springframework.util.StringUtils.*;
-
 
 @RestController
 @RequestMapping("/books")
@@ -47,7 +40,6 @@ public class BookController {
     public Book patchBook(@PathVariable Long id, @RequestBody Book changes) {
        Book b = bookService.getBookById(id);
 
-       //if (isNotEmpty(changes.getName())) b.setName(changes.getName());
        if (isNotEmpty(changes.getGenre())) b.setGenre(changes.getGenre());
 
         return bookService.updateBook(b);

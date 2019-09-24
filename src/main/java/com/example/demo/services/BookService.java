@@ -4,7 +4,6 @@ import com.example.demo.entities.Book;
 import com.example.demo.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +11,10 @@ import java.util.Optional;
 public class BookService {
     @Autowired
     BookRepository bookRepository;
+
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
 
     public List<Book> getAll(){
         return bookRepository.findAll();
