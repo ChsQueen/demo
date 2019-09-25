@@ -8,13 +8,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import java.util.Arrays;
-import java.util.List;
+
 import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.doReturn;
-
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verify;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -27,13 +27,11 @@ public class BookServiceTest {
 
     @Test
     public void testGetAll() {
-        Book book = new Book();
-        List<Book> expectedBooks = Arrays.asList(book);
-        doReturn(expectedBooks).when(bookRepository).findAll();
-        List<Book> actualBook = bookService.getAll();
-        assertThat(actualBook).isEqualTo(expectedBooks);
-
+        for (Book book : bookRepository.findAll()) {
+        verify(bookService).getAll();
+        }
     }
+
     @Test
     public void testGetById() {
         Long bookid = Long.valueOf(6);
@@ -46,9 +44,10 @@ public class BookServiceTest {
     @Test
     public void testaddBook() {
         Book book = new Book();
-        doReturn(book).when(bookRepository).save(book);
+        book.setName("test addname");
+        Mockito.when(bookRepository.save(any(Book.class))).thenReturn(book);
         Book createdbook = bookService.createBook(book);
-        assertThat(book).isEqualTo(createdbook);
+        assertThat(book.getName()).isSameAs(createdbook.getName());
     }
 
     @Test
@@ -62,8 +61,9 @@ public class BookServiceTest {
     @Test
     public void testupdate() {
         Book book = new Book();
-        doReturn(book).when(bookRepository).save(book);
+        book.setName("test updname");
+        Mockito.when(bookRepository.save(any(Book.class))).thenReturn(new Book());
         Book updbook = bookService.updateBook(book);
-        assertThat(book).isEqualTo(updbook);
+        assertThat(book.getBookId()).isSameAs(updbook.getBookId());
     }
 }
