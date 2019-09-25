@@ -74,12 +74,13 @@ public class BookControllerTests {
     @Test
     public void updateBookWithPatch() throws Exception {
         Book book = books.get(4);
-        String newGenre= "Updated Genre With Patch";
+        String newGenre= "Updated Genre With Patch,Partial Update";
         String jsonData = String.format("{ \"genre\": \"%s\" }",newGenre);
 
         mvc.perform(patch("/books/"+book.getBookId()).contentType(MediaType.APPLICATION_JSON).content(jsonData))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("genre").value(newGenre));
+                .andExpect(jsonPath("genre").value(newGenre))
+                .andExpect(jsonPath("name").value(book.getName()));
     }
 
     @Test

@@ -28,9 +28,9 @@ public class BookController {
 
     @PutMapping("/{id}")
     public Book updateBook(@RequestBody Book book, @PathVariable Long id) {
-        Book b = bookService.getBookById(book.getBookId());
-        if (book != null) {
-            return bookService.updateBook(book);
+        Book b = bookService.getBookById(id); //first find the book with the id that they want to update
+        if (b != null) {
+            return bookService.updateBook(book); //update book
         } else {
             return null;
         }
@@ -38,11 +38,11 @@ public class BookController {
 
     @PatchMapping("/{id}")
     public Book patchBook(@PathVariable Long id, @RequestBody Book changes) {
-       Book b = bookService.getBookById(id);
-
+       Book b = bookService.getBookById(id); //first find the book with the id that they want to update
+       //update genre and name for that id they want to update, and only update with non null and non blank changes after checking
        if (isNotEmpty(changes.getGenre())) b.setGenre(changes.getGenre());
-
-        return bookService.updateBook(b);
+       if (isNotEmpty(changes.getName())) b.setName(changes.getName());
+       return bookService.updateBook(b);
 
     }
 
